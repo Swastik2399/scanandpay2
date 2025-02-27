@@ -22,7 +22,7 @@ h1 {
   color: #333;
 }
 
-input[type="file"], input[type="text"] {
+input[type="file"], input[type="text"], input[type="number"], button {
   display: block;
   width: 100%;
   padding: 10px;
@@ -30,6 +30,17 @@ input[type="file"], input[type="text"] {
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+button {
+  background: #28a745;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #218838;
 }
 
 #qr-reader {
