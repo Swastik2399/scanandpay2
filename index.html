@@ -3,30 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scan & Pay</title>
+  <title>QR Code Payment</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>Scan & Pay</h1>
-    
+    <h1>QR Code Payment</h1>
+
     <!-- Live QR Scanner -->
     <div id="qr-reader"></div>
 
     <!-- Upload QR from Gallery -->
     <input type="file" id="qr-upload" accept="image/*" onchange="scanFromImage(event)">
 
-    <!-- Scanned QR Data -->
-    <input type="text" id="scanned-data" placeholder="Scanned QR Code Data" readonly>
+    <!-- Extracted UPI ID (Editable) -->
+    <input type="text" id="upi-id" placeholder="Extracted UPI ID">
 
     <!-- Enter Amount -->
     <input type="number" id="amount" placeholder="Enter Amount">
 
     <!-- Pay Now Button -->
     <button onclick="payNow()">Pay Now</button>
+
+    <!-- Transaction History (Session only) -->
+    <div id="history">
+      <h2>Transaction History</h2>
+      <ul id="transaction-list"></ul>
+    </div>
   </div>
 
-  <!-- QR Code Scanner Library -->
   <script src="https://unpkg.com/html5-qrcode"></script>
   <script src="script.js"></script>
 </body>
