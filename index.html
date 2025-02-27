@@ -12,11 +12,18 @@
     
     <!-- Live QR Scanner -->
     <div id="qr-reader"></div>
-    
+
     <!-- Upload QR from Gallery -->
     <input type="file" id="qr-upload" accept="image/*" onchange="scanFromImage(event)">
-    
+
+    <!-- Scanned QR Data -->
     <input type="text" id="scanned-data" placeholder="Scanned QR Code Data" readonly>
+
+    <!-- Enter Amount -->
+    <input type="number" id="amount" placeholder="Enter Amount">
+
+    <!-- Pay Now Button -->
+    <button onclick="payNow()">Pay Now</button>
   </div>
 
   <!-- QR Code Scanner Library -->
