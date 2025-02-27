@@ -1,10 +1,7 @@
 // Full2SMS API credentials
 const mid = "IMqfKWLNz0R4r7X3vsaHpwobu";
-const mkey = "ZFY80mrVCa73IvSopM591AWEd;
+const mkey = "ZFY80mrVCa73IvSopM591AWEd";
 const guid = "1pjlY0oUKe3FNziGAwIqXfLV2";
-
-let mobile = "";
-let type = "";
 
 // Start live QR scanner
 function startQRScanner() {
@@ -15,7 +12,7 @@ function startQRScanner() {
     { fps: 10, qrbox: 250 },
     (decodedText) => {
       qrReader.stop();
-      processQRData(decodedText);
+      extractUPI(decodedText);
     },
     (error) => console.log("QR scan error:", error)
   );
@@ -30,7 +27,7 @@ function scanFromImage(event) {
 
   qrReader.scanFile(file, true)
     .then((decodedText) => {
-      processQRData(decodedText);
+      extractUPI(decodedText);
     })
     .catch((error) => {
       console.error("Image scan error:", error);
@@ -38,34 +35,26 @@ function scanFromImage(event) {
     });
 }
 
-// Extract and set mobile/UPI data
-function processQRData(qrData) {
-  document.getElementById("scanned-data").value = qrData;
-
+// Extract UPI ID from QR data
+function extractUPI(qrData) {
   const upiMatch = qrData.match(/pa=([\w.\-]+@[a-zA-Z]+)/);
-  const mobileMatch = qrData.match(/\d{10}/);
 
-  if (mobileMatch) {
-    mobile = mobileMatch[0];
-    type = "mobile";
-  } else if (upiMatch) {
-    mobile = upiMatch[1];
-    type = "upi";
+  if (upiMatch) {
+    document.getElementById("upi-id").value = upiMatch[1];
+    alert("UPI ID extracted successfully!");
   } else {
-    alert("No valid mobile number or UPI ID found in QR code!");
-    return;
+    alert("No valid UPI ID found in QR code!");
   }
-
-  alert("QR code scanned successfully!");
 }
 
 // Pay Now function
 function payNow() {
+  const upiId = document.getElementById("upi-id").value;
   const amount = document.getElementById("amount").value;
   const info = "Payment via QR";
 
-  if (!mobile || !type) {
-    alert("Please scan a valid QR code first!");
+  if (!upiId) {
+    alert("Please enter a valid UPI ID!");
     return;
   }
 
@@ -74,21 +63,32 @@ function payNow() {
     return;
   }
 
-  const url = `https://full2sms.in/api/v2/payout?mid=${mid}&mkey=${mkey}&guid=${guid}&type=${type}&amount=${amount}&mobile=${mobile}&info=${encodeURIComponent(info)}`;
+  const url = `https://full2sms.in/api/v2/payout?mid=${mid}&mkey=${mkey}&guid=${guid}&type=upi&amount=${amount}&mobile=${encodeURIComponent(upiId)}&info=${encodeURIComponent(info)}`;
 
   fetch(url, { method: 'GET' })
     .then(response => response.json())
     .then(data => {
       if (data.status === "success") {
         alert(data.message || "Payment successful!");
+        addTransaction(upiId, amount, "Success");
       } else {
         alert(data.message || "Payment failed!");
+        addTransaction(upiId, amount, "Failed");
       }
     })
     .catch(error => {
       console.error("Payment error:", error);
       alert("Payment request failed!");
+      addTransaction(upiId, amount, "Failed");
     });
+}
+
+// Add transaction to session-only history
+function addTransaction(upiId, amount, status) {
+  const transactionList = document.getElementById("transaction-list");
+  const listItem = document.createElement("li");
+  listItem.textContent = `UPI: ${upiId}, Amount: ₹${amount}, Status: ${status}`;
+  transactionList.appendChild(listItem);
 }
 
 // Auto-start live scanner on load
