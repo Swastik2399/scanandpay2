@@ -1,38 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>QR Code Payment</title>
-  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1>QR Code Payment</h1>
+  <h2>Scan or Upload QR Code</h2>
 
-    <!-- Live QR Scanner -->
-    <div id="qr-reader"></div>
+  <input type="file" accept="image/*" id="uploadQr" onchange="uploadQrCode()" />
+  <br><br>
 
-    <!-- Upload QR from Gallery -->
-    <input type="file" id="qr-upload" accept="image/*" onchange="scanFromImage(event)">
+  <label for="upiId">UPI ID:</label>
+  <input type="text" id="upiId" placeholder="UPI ID will appear here" />
+  <br><br>
 
-    <!-- Extracted UPI ID (Editable) -->
-    <input type="text" id="upi-id" placeholder="Extracted UPI ID">
+  <label for="amount">Amount:</label>
+  <input type="number" id="amount" placeholder="Enter amount" />
+  <br><br>
 
-    <!-- Enter Amount -->
-    <input type="number" id="amount" placeholder="Enter Amount">
+  <button onclick="makePayment()">Pay Now</button>
+  <br><br>
 
-    <!-- Pay Now Button -->
-    <button onclick="payNow()">Pay Now</button>
+  <button onclick="checkBalance()">Check Balance</button>
+  <p id="balance"></p>
 
-    <!-- Transaction History (Session only) -->
-    <div id="history">
-      <h2>Transaction History</h2>
-      <ul id="transaction-list"></ul>
-    </div>
-  </div>
-
-  <script src="https://unpkg.com/html5-qrcode"></script>
   <script src="script.js"></script>
 </body>
 </html>
