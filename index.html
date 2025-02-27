@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scan & Pay</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Scan & Pay</h1>
+    
+    <!-- Live QR Scanner -->
+    <div id="qr-reader"></div>
+    
+    <!-- Upload QR from Gallery -->
+    <input type="file" id="qr-upload" accept="image/*" onchange="scanFromImage(event)">
+    
+    <input type="text" id="scanned-data" placeholder="Scanned QR Code Data" readonly>
+  </div>
+
+  <!-- QR Code Scanner Library -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script src="script.js"></script>
+</body>
+</html>
